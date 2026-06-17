@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #161920;
+    --surface2: #1e2230;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8eaf0;
+    --text2: #8a90a0;
+    --text3: #555b6e;
+    --accent: #5b7fff;
+    --accent-glow: rgba(91,127,255,0.18);
+    --radius: 14px;
+    --card-size: 88px;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 40px 0;
+  }
+  .clock { font-size: 13px; color: var(--text3); letter-spacing: 0.04em; }
+  .add-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-family: inherit; font-weight: 500;
+    color: var(--text2); background: var(--surface2);
+    border: 0.5px solid var(--border2); border-radius: 8px;
+    padding: 6px 12px; cursor: pointer; transition: color 0.15s, border-color 0.15s;
+  }
+  .add-btn:hover { color: var(--text); border-color: var(--accent); }
+  .add-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ── Main layout ── */
+  .main { padding: 32px 40px 60px; max-width: 1200px; margin: 0 auto; }
+
+  .greeting { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 32px; }
+  .greeting span { color: var(--text3); font-weight: 400; }
+
+  /* ── Category section ── */
+  .category { margin-bottom: 36px; }
+  .category-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .category-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text3);
+  }
+  .category-line { flex: 1; height: 0.5px; background: var(--border); }
+  .cat-edit-btn {
+    font-size: 11px; color: var(--text3); background: none; border: none;
+    cursor: pointer; font-family: inherit; padding: 2px 4px;
+    border-radius: 4px; transition: color 0.15s;
+  }
+  .cat-edit-btn:hover { color: var(--text2); }
+
+  /* ── Bookmarks grid ── */
+  .grid {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+
+  /* ── Bookmark tile ── */
+  .tile {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 7px;
+    width: var(--card-size); min-height: var(--card-size);
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 8px 10px;
+    cursor: pointer; text-decoration: none;
+    position: relative; transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .tile:hover { border-color: var(--border2); background: var(--surface2); }
+  .tile:hover .tile-delete { opacity: 1; }
+
+  .tile-icon {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: var(--surface2); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px; font-weight: 600;
+  }
+  .tile-icon img { width: 100%; height: 100%; object-fit: contain; }
+  .tile-icon.fallback { font-size: 15px; color: var(--text2); }
+
+  .tile-name {
+    font-size: 11px; font-weight: 500; color: var(--text2);
+    text-align: center; line-height: 1.3;
+    max-width: 72px; overflow: hidden;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+
+  .tile-delete {
+    position: absolute; top: -6px; right: -6px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #2a2d3a; border: 0.5px solid var(--border2);
+    color: var(--text3); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: opacity 0.15s, color 0.15s;
+    font-size: 10px; line-height: 1;
+  }
+  .tile-delete:hover { color: #ff6b6b; }
+
+  /* ── Empty state add tile ── */
+  .tile-add {
+    border-style: dashed; border-color: var(--border2);
+    color: var(--text3); flex-direction: column; gap: 5px;
+    font-size: 11px;
+  }
+  .tile-add:hover { border-color: var(--accent); color: var(--accent); }
+  .tile-add svg { width: 20px; height: 20px; }
+
+  /* ── Modal ── */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.18s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: #1a1d27; border: 0.5px solid var(--border2);
+    border-radius: 16px; padding: 24px; width: 360px;
+    transform: translateY(10px); transition: transform 0.18s;
+  }
+  .modal-backdrop.open .modal { transform: translateY(0); }
+  .modal h2 { font-size: 15px; font-weight: 600; margin-bottom: 18px; }
+  .modal label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 5px; margin-top: 12px; }
+  .modal label:first-of-type { margin-top: 0; }
+  .modal input, .modal select {
+    width: 100%; background: var(--surface); border: 0.5px solid var(--border2);
+    border-radius: 8px; color: var(--text); font-family: inherit; font-size: 13px;
+    padding: 9px 11px; outline: none; transition: border-color 0.15s;
+  }
+  .modal input:focus, .modal select:focus { border-color: var(--accent); }
+  .modal select option { background: #1a1d27; }
+  .modal-actions { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
+  .btn { font-family: inherit; font-size: 13px; font-weight: 500; border-radius: 8px;
+    padding: 8px 16px; cursor: pointer; border: 0.5px solid var(--border2);
+    transition: background 0.15s, border-color 0.15s; }
+  .btn-ghost { background: transparent; color: var(--text2); }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #7090ff; border-color: #7090ff; }
+
+  /* ── Add category ── */
+  .add-cat-row {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+  }
+  .add-cat-row input {
+    flex: 1; background: var(--surface); border: 0.5px solid var(--border2);
+    border-radius: 8px; color: var(--text); font-family: inherit; font-size: 12px;
+    padding: 6px 10px; outline: none;
+  }
+  .add-cat-row input:focus { border-color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .main { padding: 20px 16px 40px; }
+    .topbar { padding: 16px 16px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="clock" id="clock"></div>
+  <button class="add-btn" onclick="openAddModal()">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
+    </svg>
+    Add bookmark
+  </button>
+</div>
+
+<div class="main">
+  <p class="greeting">Good <span id="timeOfDay">morning</span> — your web</p>
+  <div id="categories-container"></div>
+</div>
+
+<!-- Add bookmark modal -->
+<div class="modal-backdrop" id="modal" onclick="closeModalIfBackdrop(event)">
+  <div class="modal">
+    <h2 id="modal-title">Add bookmark</h2>
+    <label>Name</label>
+    <input id="bm-name" type="text" placeholder="e.g. GitHub" />
+    <label>URL</label>
+    <input id="bm-url" type="url" placeholder="https://github.com" />
+    <label>Category</label>
+    <select id="bm-category"></select>
+    <div class="add-cat-row" style="margin-top:6px;">
+      <input id="new-cat-input" type="text" placeholder="Or type a new category…" />
+      <button class="btn btn-ghost" style="padding:6px 10px; font-size:12px;" onclick="addCategoryFromInput()">Add</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBookmark()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── State ── */
+const STORAGE_KEY = 'bm_data_v1';
+
+const DEFAULT_DATA = {
+  categories: ['Work', 'Tools', 'Media', 'News'],
+  bookmarks: [
+    { id: 1, name: 'GitHub', url: 'https://github.com', category: 'Work' },
+    { id: 2, name: 'Linear', url: 'https://linear.app', category: 'Work' },
+    { id: 3, name: 'Notion', url: 'https://notion.so', category: 'Work' },
+    { id: 4, name: 'Figma', url: 'https://figma.com', category: 'Tools' },
+    { id: 5, name: 'Claude', url: 'https://claude.ai', category: 'Tools' },
+    { id: 6, name: 'YouTube', url: 'https://youtube.com', category: 'Media' },
+    { id: 7, name: 'Spotify', url: 'https://open.spotify.com', category: 'Media' },
+    { id: 8, name: 'Hacker News', url: 'https://news.ycombinator.com', category: 'News' },
+  ]
+};
+
+let data = loadData();
+let editingId = null;
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+
+function saveData() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+/* ── Clock ── */
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  document.getElementById('clock').textContent =
+    `${now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${h12}:${m} ${ampm}`;
+  document.getElementById('timeOfDay').textContent =
+    h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+/* ── Favicon helper ── */
+function faviconUrl(url) {
+  try {
+    const host = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?domain=${host}&sz=64`;
+  } catch(e) { return null; }
+}
+
+function initials(name) {
+  return name.split(/\s+/).map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+
+/* ── Render ── */
+function render() {
+  const container = document.getElementById('categories-container');
+  container.innerHTML = '';
+
+  data.categories.forEach(cat => {
+    const bms = data.bookmarks.filter(b => b.category === cat);
+
+    const sec = document.createElement('div');
+    sec.className = 'category';
+
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.innerHTML = `
+      <span class="category-label">${escHtml(cat)}</span>
+      <div class="category-line"></div>
+      <button class="cat-edit-btn" title="Remove category" onclick="removeCategory('${escHtml(cat)}')">✕</button>
+    `;
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    grid.setAttribute('data-cat', cat);
+
+    bms.forEach(bm => {
+      grid.appendChild(makeTile(bm));
+    });
+
+    // add tile
+    const addTile = document.createElement('div');
+    addTile.className = 'tile tile-add';
+    addTile.title = 'Add bookmark to ' + cat;
+    addTile.innerHTML = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="10" y1="3" x2="10" y2="17"/><line x1="3" y1="10" x2="17" y2="10"/></svg><span>Add</span>`;
+    addTile.onclick = () => openAddModal(cat);
+    grid.appendChild(addTile);
+
+    sec.appendChild(header);
+    sec.appendChild(grid);
+    container.appendChild(sec);
+  });
+}
+
+function makeTile(bm) {
+  const tile = document.createElement('a');
+  tile.className = 'tile';
+  tile.href = bm.url;
+  tile.title = bm.url;
+  tile.setAttribute('data-id', bm.id);
+
+  const fav = faviconUrl(bm.url);
+  const iconDiv = document.createElement('div');
+  iconDiv.className = 'tile-icon';
+
+  if (fav) {
+    const img = document.createElement('img');
+    img.src = fav;
+    img.alt = '';
+    img.onerror = () => {
+      iconDiv.innerHTML = '';
+      iconDiv.className = 'tile-icon fallback';
+      iconDiv.textContent = initials(bm.name);
+    };
+    iconDiv.appendChild(img);
+  } else {
+    iconDiv.className = 'tile-icon fallback';
+    iconDiv.textContent = initials(bm.name);
+  }
+
+  const name = document.createElement('span');
+  name.className = 'tile-name';
+  name.textContent = bm.name;
+
+  const del = document.createElement('button');
+  del.className = 'tile-delete';
+  del.innerHTML = '✕';
+  del.title = 'Remove';
+  del.onclick = (e) => { e.preventDefault(); e.stopPropagation(); removeBookmark(bm.id); };
+
+  tile.appendChild(iconDiv);
+  tile.appendChild(name);
+  tile.appendChild(del);
+  return tile;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Modal ── */
+function openAddModal(presetCat) {
+  editingId = null;
+  document.getElementById('modal-title').textContent = 'Add bookmark';
+  document.getElementById('bm-name').value = '';
+  document.getElementById('bm-url').value = '';
+  document.getElementById('new-cat-input').value = '';
+  populateCatSelect(presetCat || data.categories[0]);
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => document.getElementById('bm-name').focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+function closeModalIfBackdrop(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+
+function populateCatSelect(selected) {
+  const sel = document.getElementById('bm-category');
+  sel.innerHTML = '';
+  data.categories.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    if (c === selected) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function saveBookmark() {
+  const name = document.getElementById('bm-name').value.trim();
+  let url = document.getElementById('bm-url').value.trim();
+  const cat = document.getElementById('bm-category').value;
+
+  if (!name || !url) { alert('Please fill in name and URL.'); return; }
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+  if (editingId) {
+    const bm = data.bookmarks.find(b => b.id === editingId);
+    if (bm) { bm.name = name; bm.url = url; bm.category = cat; }
+  } else {
+    data.bookmarks.push({ id: Date.now(), name, url, category: cat });
+  }
+
+  saveData(); render(); closeModal();
+}
+
+function removeBookmark(id) {
+  data.bookmarks = data.bookmarks.filter(b => b.id !== id);
+  saveData(); render();
+}
+
+function addCategoryFromInput() {
+  const input = document.getElementById('new-cat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  if (!data.categories.includes(val)) {
+    data.categories.push(val);
+    saveData();
+  }
+  populateCatSelect(val);
+  input.value = '';
+}
+
+function removeCategory(cat) {
+  if (!confirm(`Remove category "${cat}"? Bookmarks in it will also be removed.`)) return;
+  data.categories = data.categories.filter(c => c !== cat);
+  data.bookmarks = data.bookmarks.filter(b => b.category !== cat);
+  saveData(); render();
+}
+
+/* ── Keyboard ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) saveBookmark();
+});
+
+/* ── Init ── */
+render();
+</script>
+</body>
+</html>
