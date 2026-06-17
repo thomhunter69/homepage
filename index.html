@@ -3,27 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home</title>
+<title>My Work Station</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #c8d3e0;
-    --surface: #ffffff;
-    --surface2: #f5f7fa;
-    --border: #e2e6ed;
-    --border2: #cdd2db;
-    --text: #1a2030;
-    --text2: #5a6478;
-    --text3: #9aa0ae;
-    --blue: #2563eb;
-    --blue-light: #eff4ff;
-    --blue-mid: #93b4f5;
-    --radius: 10px;
-    --card-size: 90px;
+    --bg: #1c2333;
+    --surface: #242e42;
+    --surface2: #2d3a52;
+    --surface3: #354057;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #f0f4ff;
+    --text2: #9baac4;
+    --text3: #5d6d88;
+    --blue: #4d7eff;
+    --blue-hover: #6690ff;
+    --blue-dim: rgba(77,126,255,0.15);
+    --radius: 11px;
+    --card-size: 92px;
   }
 
   body {
@@ -37,253 +38,140 @@
   .header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 0 40px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 0 44px;
+    height: 54px;
+    display: flex; align-items: center; justify-content: space-between;
   }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
+  .header-left { display: flex; align-items: center; gap: 10px; }
   .logo {
-    width: 28px; height: 28px;
-    background: var(--blue);
-    border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; background: var(--blue);
+    border-radius: 7px; display: flex; align-items: center; justify-content: center;
   }
-  .logo svg { width: 15px; height: 15px; }
-
-  .site-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .clock {
-    font-size: 13px;
-    color: var(--text3);
-    letter-spacing: 0.01em;
-  }
-
+  .logo svg { width: 14px; height: 14px; }
+  .site-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .clock { font-size: 12px; color: var(--text3); letter-spacing: 0.02em; }
   .add-btn {
     display: flex; align-items: center; gap: 5px;
-    font-size: 13px; font-family: inherit; font-weight: 500;
+    font-size: 12px; font-family: inherit; font-weight: 500;
     color: #fff; background: var(--blue);
     border: none; border-radius: 7px;
-    padding: 7px 13px; cursor: pointer;
-    transition: background 0.15s;
+    padding: 7px 13px; cursor: pointer; transition: background 0.15s;
   }
-  .add-btn:hover { background: #1d4fd8; }
-  .add-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .add-btn:hover { background: var(--blue-hover); }
+  .add-btn svg { width: 12px; height: 12px; }
 
   /* ── Main ── */
-  .main {
-    padding: 32px 40px 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  .main { padding: 36px 44px 64px; max-width: 1280px; margin: 0 auto; }
 
-  /* ── Category section ── */
-  .category { margin-bottom: 28px; }
-
-  .category-header {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 12px;
-  }
-
+  /* ── Category ── */
+  .category { margin-bottom: 32px; }
+  .category-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .category-label {
-    font-size: 14px; font-weight: 800;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    color: #2a3a52;
-    white-space: nowrap;
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text2); white-space: nowrap;
   }
-
-  .category-line {
-    flex: 1; height: 1px;
-    background: var(--border);
+  .category-line { flex: 1; height: 1px; background: var(--border); }
+  .cat-remove-btn {
+    font-size: 11px; color: var(--text3); background: none; border: none;
+    cursor: pointer; font-family: inherit; padding: 2px 6px;
+    border-radius: 4px; transition: color 0.12s;
   }
-
-  .cat-edit-btn {
-    font-size: 11px; color: var(--text3);
-    background: none; border: none; cursor: pointer;
-    font-family: inherit; padding: 2px 5px;
-    border-radius: 4px; transition: color 0.12s, background 0.12s;
-  }
-  .cat-edit-btn:hover { color: #e74c3c; background: #fdf0ef; }
+  .cat-remove-btn:hover { color: #e05252; }
 
   /* ── Grid ── */
-  .grid {
-    display: flex; flex-wrap: wrap; gap: 8px;
-  }
+  .grid { display: flex; flex-wrap: wrap; gap: 9px; }
 
   /* ── Tile ── */
   .tile {
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 7px;
+    align-items: center; justify-content: center; gap: 8px;
     width: var(--card-size); min-height: var(--card-size);
-    background: #c2d9f5;
-    border: 1px solid #a8c8f0;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 12px 8px 10px;
-    cursor: pointer; text-decoration: none;
-    position: relative;
-    transition: border-color 0.12s, box-shadow 0.12s;
+    text-decoration: none; position: relative;
+    transition: background 0.13s, border-color 0.13s;
     user-select: none;
   }
-  .tile:hover {
-    border-color: var(--blue-mid);
-    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
-  }
+  .tile:hover { background: var(--surface2); border-color: var(--border2); }
   .tile:hover .tile-delete { opacity: 1; }
 
   .tile-icon {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    width: 38px; height: 38px; border-radius: 9px;
+    background: var(--surface2); border: 1px solid var(--border);
+    overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
-  .tile-icon img { width: 24px; height: 24px; object-fit: contain; }
+  .tile-icon img { width: 22px; height: 22px; object-fit: contain; }
   .tile-icon.fallback {
-    font-size: 14px; font-weight: 600;
-    color: var(--blue); background: var(--blue-light);
-    border-color: #c7d9fc;
+    font-size: 13px; font-weight: 700;
+    color: var(--blue); background: var(--blue-dim);
+    border-color: transparent;
   }
 
   .tile-name {
-    font-size: 11px; font-weight: 500;
-    color: var(--text2);
-    text-align: center; line-height: 1.3;
-    max-width: 74px; overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    word-break: break-word;
+    font-size: 10.5px; font-weight: 500; color: var(--text2);
+    text-align: center; line-height: 1.3; max-width: 76px;
+    overflow: hidden; display: -webkit-box;
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word;
   }
 
   .tile-delete {
     position: absolute; top: -6px; right: -6px;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: #fff; border: 1px solid var(--border2);
-    color: var(--text3);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; opacity: 0;
-    transition: opacity 0.12s, color 0.12s;
-    font-size: 9px; line-height: 1;
+    width: 17px; height: 17px; border-radius: 50%;
+    background: var(--surface3); border: 1px solid var(--border2);
+    color: var(--text3); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: opacity 0.12s, color 0.12s;
+    font-size: 8px; line-height: 1;
   }
-  .tile-delete:hover { color: #e74c3c; border-color: #f5c0bb; }
+  .tile-delete:hover { color: #e05252; }
 
   /* ── Add tile ── */
   .tile-add {
-    border-style: dashed;
-    border-color: var(--border2);
-    background: transparent;
-    color: var(--text3);
+    border-style: dashed; border-color: var(--border2);
+    background: transparent; color: var(--text3); cursor: pointer;
   }
-  .tile-add:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-    background: var(--blue-light);
-    box-shadow: none;
-  }
+  .tile-add:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
   .tile-add svg { width: 18px; height: 18px; }
-  .tile-add span { font-size: 11px; font-weight: 500; }
+  .tile-add span { font-size: 10.5px; font-weight: 500; }
 
   /* ── Modal ── */
   .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(15, 23, 42, 0.35);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
     display: flex; align-items: center; justify-content: center;
-    z-index: 100; opacity: 0; pointer-events: none;
-    transition: opacity 0.15s;
+    z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.15s;
   }
   .modal-backdrop.open { opacity: 1; pointer-events: all; }
-
   .modal {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
-    width: 380px;
-    box-shadow: 0 8px 32px rgba(15,23,42,0.12);
-    transform: translateY(8px);
-    transition: transform 0.15s;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 14px; padding: 24px; width: 380px;
+    transform: translateY(8px); transition: transform 0.15s;
   }
   .modal-backdrop.open .modal { transform: translateY(0); }
-
-  .modal h2 {
-    font-size: 15px; font-weight: 600;
-    color: var(--text); margin-bottom: 18px;
-  }
-
+  .modal h2 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 18px; }
   .modal label {
-    font-size: 12px; font-weight: 500;
-    color: var(--text2);
-    display: block; margin-bottom: 5px; margin-top: 13px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text3); display: block; margin-bottom: 5px; margin-top: 13px;
   }
   .modal label:first-of-type { margin-top: 0; }
-
   .modal input, .modal select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    color: var(--text);
-    font-family: inherit; font-size: 13px;
-    padding: 8px 11px; outline: none;
-    transition: border-color 0.12s, box-shadow 0.12s;
+    width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 7px; color: var(--text); font-family: inherit; font-size: 13px;
+    padding: 8px 11px; outline: none; transition: border-color 0.12s;
   }
-  .modal input:focus, .modal select:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-    background: #fff;
-  }
-  .modal select option { background: #fff; }
-
-  .add-cat-row {
-    display: flex; align-items: center; gap: 7px;
-    margin-top: 6px;
-  }
+  .modal input:focus, .modal select:focus { border-color: var(--blue); }
+  .modal select option { background: var(--surface); }
+  .add-cat-row { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
   .add-cat-row input { flex: 1; }
-
-  .modal-actions {
-    display: flex; gap: 8px;
-    margin-top: 20px; justify-content: flex-end;
-  }
-
-  .btn {
-    font-family: inherit; font-size: 13px; font-weight: 500;
-    border-radius: 7px; padding: 8px 16px;
-    cursor: pointer; transition: background 0.12s, border-color 0.12s;
-  }
-  .btn-ghost {
-    background: transparent; color: var(--text2);
-    border: 1px solid var(--border);
-  }
+  .modal-actions { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
+  .btn { font-family: inherit; font-size: 13px; font-weight: 500; border-radius: 7px; padding: 8px 16px; cursor: pointer; transition: background 0.12s; }
+  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
   .btn-ghost:hover { background: var(--surface2); color: var(--text); }
-
-  .btn-primary {
-    background: var(--blue); border: 1px solid var(--blue); color: #fff;
-  }
-  .btn-primary:hover { background: #1d4fd8; border-color: #1d4fd8; }
-
-  .btn-sm {
-    font-size: 12px; padding: 6px 10px;
-  }
+  .btn-primary { background: var(--blue); border: 1px solid var(--blue); color: #fff; }
+  .btn-primary:hover { background: var(--blue-hover); }
+  .btn-sm { font-size: 12px; padding: 6px 10px; }
 
   @media (max-width: 600px) {
     .main { padding: 20px 16px 40px; }
@@ -296,11 +184,11 @@
 <header class="header">
   <div class="header-left">
     <div class="logo">
-      <svg viewBox="0 0 15 15" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="2" width="4" height="4" rx="1"/>
-        <rect x="9" y="2" width="4" height="4" rx="1"/>
-        <rect x="2" y="9" width="4" height="4" rx="1"/>
-        <rect x="9" y="9" width="4" height="4" rx="1"/>
+      <svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1.5" y="1.5" width="4" height="4" rx="1"/>
+        <rect x="8.5" y="1.5" width="4" height="4" rx="1"/>
+        <rect x="1.5" y="8.5" width="4" height="4" rx="1"/>
+        <rect x="8.5" y="8.5" width="4" height="4" rx="1"/>
       </svg>
     </div>
     <span class="site-title">My Work Station</span>
@@ -308,9 +196,8 @@
   <div class="header-right">
     <span class="clock" id="clock"></span>
     <button class="add-btn" onclick="openAddModal()">
-      <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="6.5" y1="1" x2="6.5" y2="12"/>
-        <line x1="1" y1="6.5" x2="12" y2="6.5"/>
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/>
       </svg>
       Add bookmark
     </button>
@@ -321,7 +208,6 @@
   <div id="categories-container"></div>
 </div>
 
-<!-- Modal -->
 <div class="modal-backdrop" id="modal" onclick="closeModalIfBackdrop(event)">
   <div class="modal">
     <h2 id="modal-title">Add bookmark</h2>
@@ -343,8 +229,7 @@
 </div>
 
 <script>
-const STORAGE_KEY = 'bm_data_v2';
-
+const STORAGE_KEY = 'bm_data_v3';
 const DEFAULT_DATA = {
   categories: ['Work', 'Development Tools', 'AI Tools', 'Media'],
   bookmarks: [
@@ -370,7 +255,6 @@ function saveData() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
 }
 
-/* Clock */
 function updateClock() {
   const now = new Date();
   const h = now.getHours(), m = String(now.getMinutes()).padStart(2,'0');
@@ -380,7 +264,6 @@ function updateClock() {
 }
 updateClock(); setInterval(updateClock, 10000);
 
-/* Favicon */
 function faviconUrl(url) {
   try { return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=64`; }
   catch(e) { return null; }
@@ -389,7 +272,6 @@ function initials(name) {
   return name.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
 }
 
-/* Render */
 function render() {
   const container = document.getElementById('categories-container');
   container.innerHTML = '';
@@ -403,12 +285,11 @@ function render() {
     header.innerHTML = `
       <span class="category-label">${escHtml(cat)}</span>
       <div class="category-line"></div>
-      <button class="cat-edit-btn" onclick="removeCategory('${escHtml(cat)}')">Remove</button>
+      <button class="cat-remove-btn" onclick="removeCategory('${escHtml(cat)}')">Remove</button>
     `;
 
     const grid = document.createElement('div');
     grid.className = 'grid';
-
     bms.forEach(bm => grid.appendChild(makeTile(bm)));
 
     const addTile = document.createElement('div');
@@ -428,6 +309,8 @@ function makeTile(bm) {
   const tile = document.createElement('a');
   tile.className = 'tile';
   tile.href = bm.url;
+  tile.target = '_blank';
+  tile.rel = 'noopener noreferrer';
   tile.title = bm.url;
 
   const iconDiv = document.createElement('div');
@@ -463,7 +346,6 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* Modal */
 function openAddModal(presetCat) {
   editingId = null;
   document.getElementById('modal-title').textContent = 'Add bookmark';
